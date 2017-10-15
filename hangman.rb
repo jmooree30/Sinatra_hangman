@@ -49,7 +49,13 @@ def win
   end 
 end 
 
+def used_words
+    session[:used] << params['text']
+    session[:used]
+end 
+
 def start_game
+  session[:used] = []
   session[:counter] = -1
   session[:get_word] = get_word
   session[:ciphered_word] = ciphered_word
@@ -64,6 +70,7 @@ end
 
 get '/newgame' do
   start_game
+  @used = session[:used]
   @counter = session[:counter]
   @split_word = session[:split_word]
   @random = session[:get_word]
@@ -73,6 +80,7 @@ end
 
 get '/play' do 
   wrong_choice
+  @used = session[:used]
   @counter = session[:counter]
   @split_word = session[:split_word]
   @random = session[:get_word]
