@@ -2,8 +2,6 @@ require 'sinatra'
 require 'sinatra/reloader' if development?
 enable :sessions
 
-
-
 helpers do
 
   def get_word
@@ -25,16 +23,34 @@ helpers do
   end 
 
   def choice(letter)
-    split_word.each_with_index do |i,index|
+    @split_word.each_with_index do |i,index|
       if i == letter
-        ciphered_word[index] = letter 
+        @ciphered_word[index] = letter 
       end 
     end   
-   # ciphered_word
+   @ciphered_word
   end
 
+  def wrong_choice
+     if !session[:split_word].include?(params["text"]) 
+        session[:counter] += 1
+    end
+  end
+
+  def lose
+    if @counter == 6
+        redirect 'lose'
+    end 
+  end
+
+  def win 
+    if @ciphered_word == @split_word
+        redirect 'win'
+    end 
+  end 
+
   def start_game
-    session[:counter] = 5
+    session[:counter] = -1
     session[:get_word] = get_word
     session[:ciphered_word] = ciphered_word
     session[:split_word] = split_word
@@ -42,21 +58,36 @@ helpers do
 
 end
 
-get '/'do
+get '/' do 
+  erb :intro
+end
+
+get '/newgame' do
   start_game
-  @split_word = session[:split_word]
   @counter = session[:counter]
+  @split_word = session[:split_word]
   @random = session[:get_word]
   @ciphered_word = session[:ciphered_word]
   redirect 'play'
 end 
 
-get '/play' do
-  @split_word = session[:split_word]
+get '/play' do 
+  wrong_choice
   @counter = session[:counter]
+  @split_word = session[:split_word]
   @random = session[:get_word]
   @ciphered_word = session[:ciphered_word]
   choice(params["text"])
+  lose
+  win
   erb :index
+end 
+
+get '/win' do
+  erb :win 
 end
+
+get '/lose' do
+  erb :lose
+end 
 

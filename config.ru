@@ -1,2 +1,2 @@
-require './web_guesser'
+require './hangman'
 run Sinatra::Application
