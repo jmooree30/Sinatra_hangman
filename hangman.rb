@@ -10,7 +10,7 @@ helpers do
       chomped = x.chomp
       array << chomped if (chomped.length >= 5 and chomped.length <= 12)
     end
-    the_word = array.sample 
+    the_word = array.sample.downcase 
     return the_word
   end
 
