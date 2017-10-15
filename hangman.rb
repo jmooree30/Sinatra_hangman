@@ -28,33 +28,33 @@ helpers do
         @ciphered_word[index] = letter 
       end 
     end   
-   @ciphered_word
+    @ciphered_word
   end
 
   def wrong_choice
-     if !session[:split_word].include?(params["text"]) 
-        session[:counter] += 1
-    end
+   if !session[:split_word].include?(params["text"]) 
+    session[:counter] += 1
   end
+end
 
-  def lose
-    if @counter == 6
-        redirect 'lose'
-    end 
-  end
-
-  def win 
-    if @ciphered_word == @split_word
-        redirect 'win'
-    end 
+def lose
+  if @counter == 6
+    redirect 'lose'
   end 
+end
 
-  def start_game
-    session[:counter] = -1
-    session[:get_word] = get_word
-    session[:ciphered_word] = ciphered_word
-    session[:split_word] = split_word
+def win 
+  if @ciphered_word == @split_word
+    redirect 'win'
   end 
+end 
+
+def start_game
+  session[:counter] = -1
+  session[:get_word] = get_word
+  session[:ciphered_word] = ciphered_word
+  session[:split_word] = split_word
+end 
 
 end
 
@@ -90,4 +90,3 @@ end
 get '/lose' do
   erb :lose
 end 
-
