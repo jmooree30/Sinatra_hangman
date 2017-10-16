@@ -49,9 +49,8 @@ def win
   end 
 end 
 
-def used_words
+def used_word 
     session[:used] << params['text']
-    session[:used]
 end 
 
 def start_game
@@ -80,12 +79,13 @@ end
 
 get '/play' do 
   wrong_choice
-  @used = session[:used]
   @counter = session[:counter]
   @split_word = session[:split_word]
   @random = session[:get_word]
   @ciphered_word = session[:ciphered_word]
   choice(params["text"])
+  used_word
+  @used = session[:used]
   lose
   win
   erb :index
